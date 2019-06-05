@@ -596,8 +596,6 @@ Press <kbd>:diffoff</kbd> to disable diff-mode.
 
 **Tip: On the command-line, the <kbd>vimdiff (FILE1) (FILE2)</kbd> command opens Vim in diff-mode with the two files.**
 
-Manipulate all files with :args :set autowrite :argdo
-
 
 Lesson five: Mixing Vim and the shell
 -------------------------------------
@@ -646,3 +644,18 @@ Don't change the setting --- just use the default Vim behavior.
 **Exercise:** Type `history` in bash and look for long commands that you use often.
 Store them in a text file, and use what you have learned in this lesson
 the next time, instead of retyping the long commands from scratch.
+
+
+Lesson six: And beyond
+----------------------
+
+What's next? I didn't cover everything in this workshop. I should have probably talked more about:
+
+* Put-at-current-indent with `]p`
+* `vp` to swap things
+* Setting up vimrc to use arrow keys for scrolling
+* Multi-file editing with `:set autowrite` `:argdo`
+* Search and replace with `:s`
+* Error-lists with `vim -q <(...)` `:cn`
+* Editing macros with `"qp` `"qD`
+* Using `:norm` with more than just macro-replays
