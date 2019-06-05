@@ -1,7 +1,10 @@
 Workshop: Practical Efficient Vim
 =================================
 
+**Target audience:**
 You've used Vim for a little while, and maybe even used it to write and edit code.
+You know that Vim has a Normal mode and an Insert mode
+(even though you maybe spend most time in Insert mode).
 
 You know that Vim is supposed to make you super-efficient at editing text and code,
 but you feel like you're spending a lot of time fighting Vim to make it do what you want.
@@ -16,7 +19,7 @@ and I am not going to spend too much time going over the basic commands.
 Some of the exercises involve LaTeX and Python code,
 which is more fun if you can compile or run the code after editing it.
 
-I'd recommend that you go through vimtutor (type `vimtutor` in your terminal)
+I recommend that you go through vimtutor (type `vimtutor` in your terminal)
 before the workshop to freshen up the following commands:
 
 * <kbd>i</kbd> <kbd>A</kbd> <kbd>o</kbd> <kbd>a</kbd> <kbd>A</kbd>
@@ -87,6 +90,11 @@ so that you can enter e.g. æ by typing <kbd>Compose</kbd> <kbd>a</kbd> <kbd>e</
 Lesson one: Getting tabular
 ---------------------------
 
+Goals for this lesson:
+
+* Learn about pasting text into Vim from the outside
+* Learn about recording and replaying macros
+
 **Tip: Press <kbd>"+p</kbd> to paste text into Vim that you copied from outside Vim.**
 
 Here's a small LaTeX document.
@@ -97,7 +105,8 @@ opening Vim, and typing <kbd>"+p</kbd>.
 \documentclass{memoir}
 \usepackage[utf8]{inputenc}
 \begin{document}
-I år består festudvalget af følgende FU'er:\par
+I år består festudvalget af følgende FU'er:
+
 \begin{tabular}{lll}
 \hline
 Navn & Menneskenavn & Email \\
@@ -118,7 +127,7 @@ scroll to the bottom and copy the table with ten rows.
 
 **Tip: Press <kbd>}</kbd> to go to the next blank line. Press <kbd>{</kbd> to go to the previous blank line.**
 
-In `fu.tex`, press <kbd>}</kbd> to navigate to the blank line
+In `fu.tex`, press <kbd>}</kbd> twice to navigate to the second blank line
 and paste the copied table with <kbd>"+p</kbd>.
 
 You should obtain something like:
@@ -127,7 +136,8 @@ You should obtain something like:
 \documentclass{memoir}
 \usepackage[utf8]{inputenc}
 \begin{document}
-I år består festudvalget af følgende FU'er:\par
+I år består festudvalget af følgende FU'er:
+
 \begin{tabular}{lll}
 \hline
 Navn & Menneskenavn & Email \\
@@ -204,7 +214,8 @@ You should now have a file containing something like:
 \documentclass{memoir}
 \usepackage[utf8]{inputenc}
 \begin{document}
-I år består festudvalget af følgende FU'er:\par
+I år består festudvalget af følgende FU'er:
+
 \begin{tabular}{lll}
 \hline
 Navn & Menneskenavn & Email \\
@@ -224,12 +235,18 @@ FULB & Znwn Qloobr & SHLB@TAAGEKAMMERET.dk \\
 \end{document}
 ```
 
-**Exercise:** Add `\newcommand{\furow}[3]{#1 & #2 & #3 \\}`
-and use what you have learned to convert each row
-into an invocation of the `\furow` LaTeX command.
+**Exercise:** Add `\newcommand{\FU}[3]{FU#1 & #2 & #3 \\}`
+to the preamble of the document,
+and use what you have learned so far to convert each row
+into an invocation of the `\FU` LaTeX command.
 
 Lesson two: Parselmouth
 -----------------------
+
+Goals for this lesson:
+
+* Learn about token-completion and line-completion in Insert mode.
+* Learn how to perform simple refactorings efficiently with macros and mappings.
 
 Copy the following Python code and save it as `fu.py`:
 
@@ -340,7 +357,7 @@ Press <kbd>:nnoremap &#92;r O&lt;C-A&gt; = &lt;Esc&gt;p</kbd>, and then try repl
 
 **Tip: Press <kbd>:nnoremap &lt;buffer&gt; (COMMAND) (COMMANDS)</kbd> to create a mapping that only applies in the current file.**
 
-**Put <kbd>au FileType python (COMMAND)</kbd> in your vimrc to run a command whenever you open a Python file.**
+**Put <kbd>au FileType python (COMMAND)</kbd> in your vimrc to execute (COMMAND) whenever you open a Python file.**
 
 If you want to use this trick in all Python files, add the following to your `~/.vimrc`:
 
@@ -348,7 +365,7 @@ If you want to use this trick in all Python files, add the following to your `~/
 au FileType python noremap <buffer> \r O<C-A> = <Esc>p
 ```
 
-Of course, this works for languages other than Python too.
+This works for languages other than Python too.
 If you're unsure what to put after `au FileType` for a given type of file,
 open a file of the given type and type <kbd>:set ft</kbd>,
 and Vim will respond with the filetype of the currently-open file.
@@ -386,6 +403,13 @@ au BufRead /home/rav/work/thesis/*.tex
 Lesson four: Creating and editing multiple files
 ------------------------------------------------
 
+Goals for this lesson:
+
+* Learn about HTML scraping with Vim.
+* Learn about split windows to edit multiple files.
+* Learn about processing multiple files efficiently using macros and splits.
+* Learn about diffing files inside Vim.
+
 If you go to <https://TAAGEKAMMERET.dk/galleri/2018>,
 you will see a list of albums for the year 2018/19,
 named "BEST", "KBEST-perioden", "FU", "GF", and so on.
@@ -409,9 +433,9 @@ You should end up at the following part of the file:
 <div class="col-xs-6 col-sm-4 col-md-3">
   <a class="thumbnail" href="/galleri/2018/kbest-perioden">
     <div class="thumbcap">
-      
+
 	<img src="/media/__sized__/2018/kbest-perioden/img_6585-crop-c0-5__0-5-253x253-70.JPG" alt="KBEST-perioden">
-      
+
       <div class="caption">
 	<h5>KBEST-perioden
 	  <small>53 billeder</small>
@@ -449,7 +473,7 @@ It might not look like LaTeX code right now, but don't worry, we will fix that l
 Next, switch to a new file names links.txt by pressing <kbd>:e links.txt</kbd>.
 Insert the URL from before in the new file: `https://TAAGEKAMMERET.dk/galleri/2018`
 
-**Tip: Press <kbd>CTRL-X</kbd> to decrease the number under the cursor by one.**
+**Tip: Press <kbd>CTRL-X</kbd> to *decrease* the number under the cursor by one. Press <kbd>CTRL-A</kbd> to *increase* the number under the cursor by one.**
 If there is no number under the cursor, Vim will search to the right in the current line for the first number it can find.
 
 Press <kbd>0</kbd> to move to the beginning of the line and <kbd>CTRL-X</kbd> to decrease the year in the URL by one.
@@ -477,7 +501,15 @@ https://TAAGEKAMMERET.dk/galleri/2012
 
 **Exercise:** Try splitting the current file, moving between the splits, make some edits in one split and see them reflected in the other, undo your edits, and close the splits again.
 
+**[Aside:**
+There are ways to manage many open splits, to perform vertical splits instead of horizontal, and to resize splits.
+In my experience it is rarely useful to have more than two files open on the same screen,
+but if you want to learn more, type <kbd>:h windows</kbd>.
+**---End aside]**
+
 **Tip: Press <kbd>gf</kbd> to <kbd>g</kbd>o to the <kbd>f</kbd>ile under the cursor.**
+
+**Tip: After moving the cursor far, e.g. to a different file, press <kbd>CTRL-O</kbd> to go back to where you came from. Press <kbd>CTRL-I</kbd> to go forward again.**
 
 Split the current file with <kbd>CTRL-W</kbd><kbd>s</kbd>, move to the top line in the file with <kbd>gg</kbd> and press <kbd>gf</kbd> to open the URL under the cursor.
 
@@ -551,18 +583,66 @@ This should insert a list of filenames, so your file should look like this:
 
 **Exercise:** Without typing `2012`, change the first line to `\section{2012}\begin{itemize}\input{2012.tex}\end{itemize}`. Hint: Use `yiw` to copy `2012` and `p` to put a copy of it.
 
-**Exercise:** Repeat the steps for `2013.tex`, this time recording a macro. Replay your
+**Exercise:** Repeat the steps for `2013.tex`, this time recording a macro.
+Replay your macro to process the rest of the lines.
 
-Use CTRL-O to go back
+**Tip: Press <kbd>:diffthis</kbd> to enable diff-mode for the split that the cursor is currently in.**
+When you have enabled diff-mode for two splits, Vim will highlight the differences between the split contents.
+Press <kbd>:diffoff</kbd> to disable diff-mode.
 
-Use CTRL-W s to split window
+**Exercise:** Use splits, <kbd>gf</kbd> and diff-mode to find the similarities and differences between the album names in 2016.tex and 2017.tex.
 
-CTRL-W CTRL-W to switch between windows
+**Tip: Press <kbd>:windo (COMMAND)</kbd> to run (COMMAND) in all visible splits.** For example, press <kbd>:windo diffthis</kbd> to enable diff-mode in all visible splits.
 
-Manipulate HTML and write result to a new file
-
-Record a macro to do it
+**Tip: On the command-line, the <kbd>vimdiff (FILE1) (FILE2)</kbd> command opens Vim in diff-mode with the two files.**
 
 Manipulate all files with :args :set autowrite :argdo
 
-Look at differences with vimdiff or :windo :diffthis
+
+Lesson five: Mixing Vim and the shell
+-------------------------------------
+
+**Tip: In bash, type <kbd>CTRL-X CTRL-E</kbd> to open the command-line in an editor and execute the result as a shell command.**
+bash will use the editor specified by the environment variable `$VISUAL`, so you should add the following to your `~/.bashrc`:
+
+```
+export VISUAL=vim
+```
+
+Restart your shell with the command <kbd>exec bash</kbd> after editing your bashrc.
+
+In bash, type `echo '2019 is the year of Linux on the desktop!' > the-truth.txt` without pressing RETURN.
+
+Press <kbd>CTRL-X CTRL-E</kbd>, and, if all goes well, Vim should open, displaying the command line you have just typed.
+
+Press <kbd>:q</kbd> to quit Vim, and then bash should execute the command, creating the file `the-truth.txt`.
+
+Press up-arrow to redisplay the command line and press <kbd>CTRL-X CTRL-E</kbd> again.
+
+Press <kbd>CTRL-A</kbd> in Vim to increment `2019` to `2020`, and quit with <kbd>:q</kbd>.
+Then bash executes the command line as you updated it in Vim, overwriting `the-truth.txt` with the new truth.
+
+**Tip: In Vim, the text you highlight in Visual mode, Visual Line mode or Visual Block mode, is available to other programs in the so-called "selection buffer".**
+The selection buffer is accessed via the middle-mouse button, or in some programs (such as your terminal emulator) with the keystroke <kbd>Shift-Insert</kbd>
+
+Open Vim and insert the text `echo '2019 is the year of Linux on the desktop!' > the-truth.txt`.
+
+Press <kbd>V</kbd> (capital V, that is, <kbd>Shift-v</kbd>) to select the line in Visual Line mode.
+
+Then, open a new terminal and press <kbd>Shift-Insert</kbd>. If all goes well, your terminal should insert the code you highlighted in Vim.
+
+**[Aside:**
+There is a so-called "vi readline keymap" in bash that supposedly makes editing your bash command-line more Vim-like.
+Don't use it.
+Use the standard keymap for normal uses, and use <kbd>CTRL-X CTRL-E</kbd> to launch a real editor when you need it.
+**---End aside]**
+
+**[Aside:**
+There is a `'clipboard'` setting in Vim that can be used to
+modify how Vim interacts with the Linux clipboard buffer and selection buffer.
+Don't change the setting --- just use the default Vim behavior.
+**---End aside]**
+
+**Exercise:** Type `history` in bash and look for long commands that you use often.
+Store them in a text file, and use what you have learned in this lesson
+the next time, instead of retyping the long commands from scratch.
