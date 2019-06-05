@@ -347,7 +347,7 @@ This is very useful when you want to affect a function call such as
 First move the cursor to the "r" in "re.findall", and then press <kbd>%</kbd>
 to jump to the end of the function call.
 
-**Exercise:** Extract `mo.group()` to a variable using <kbd>c%</kbd> and your macro.
+**Exercise:** Extract `row.group()` to a variable using <kbd>c%</kbd> and your macro.
 
 **Tip: Press <kbd>:nnoremap (COMMAND) (COMMANDS)</kbd> to remap (COMMAND) to (COMMANDS).**
 
