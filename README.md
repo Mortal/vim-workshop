@@ -362,7 +362,7 @@ Press <kbd>:nnoremap &#92;r O&lt;C-A&gt; = &lt;Esc&gt;p</kbd>, and then try repl
 If you want to use this trick in all Python files, add the following to your `~/.vimrc`:
 
 ```
-au FileType python noremap <buffer> \r O<C-A> = <Esc>p
+au FileType python nnoremap <buffer> \r O<C-A> = <Esc>p
 ```
 
 This works for languages other than Python too.
