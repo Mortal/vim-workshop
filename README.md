@@ -321,6 +321,15 @@ Then repeat steps 3 and 4 above (or replay the macro you just recorded).
 **Tip: Press <kbd>c%</kbd> to delete everything from the cursor until the
 parenthesis matching the first parenthesis to the right.**
 
+The motion <kbd>%</kbd> moves the cursor to the parenthesis matching the one under the cursor.
+However, if there is no parenthesis under the cursor, Vim first searches to the right
+in the line for the first open or close parenthesis, and then moves to the matching one.
+
+This is very useful when you want to affect a function call such as
+`re.findall(r'<td>(.*?)</td>', row.group())`:
+First move the cursor to the "r" in "re.findall", and then press <kbd>%</kbd>
+to jump to the end of the function call.
+
 **Exercise:** Extract `mo.group()` to a variable using <kbd>c%</kbd> and your macro.
 
 **Tip: Press <kbd>:nnoremap (COMMAND) (COMMANDS)</kbd> to remap (COMMAND) to (COMMANDS).**
