@@ -255,21 +255,21 @@ This ensures that Vim automatically indents e.g. Python code correctly.
 Close Vim and reopen fu.py after editing your vimrc file.
 **---End aside]**
 
-**Hint: Press <kbd>CTRL-P</kbd> while in Insert mode to complete the word at the cursor using other words in the current file.**
+**Tip: Press <kbd>CTRL-P</kbd> while in Insert mode to complete the word at the cursor using other words in the current file.**
 
 Navigate to the `for`-line and press <kbd>O</kbd>
 to open a new line above, type <kbd>print("TA</kbd><kbd>CTRL-P</kbd><kbd>s FUer:")</kbd>.
 This should yield the line `print("TAAGEKAMMERETs FUer:")`.
 
-**Hint: While completing in Insert mode, use <kbd>CTRL-N</kbd> and <kbd>CTRL-P</kbd>
+**Tip: While completing in Insert mode, use <kbd>CTRL-N</kbd> and <kbd>CTRL-P</kbd>
 to navigate the suggestions.
 When you are satisfied with the completed word,
 press <kbd>(ESCAPE)</kbd> or continue typing to close the completion popup.**
 
-**Hint: Press <kbd>CTRL-X</kbd><kbd>CTRL-L</kbd> while in Insert mode
+**Tip: Press <kbd>CTRL-X</kbd><kbd>CTRL-L</kbd> while in Insert mode
 to complete the line at the cursor using other lines in the current file.**
 
-**Hint: Press <kbd>CTRL-W</kbd> while in Insert mode
+**Tip: Press <kbd>CTRL-W</kbd> while in Insert mode
 to erase the last word you inserted.**
 
 Go to the second `import`-line and press <kbd>o</kbd>
@@ -361,17 +361,17 @@ Vim should insert `\newcommand{\sunmass}{M_{\odot}}` on a new line above.
 Lesson three: Spell-checking
 ----------------------------
 
-**Hint: <kbd>:set spell spelllang=en&#95;us</kbd> to enable American English spell-checking for the current file.**
+**Tip: <kbd>:set spell spelllang=en&#95;us</kbd> to enable American English spell-checking for the current file.**
 
-**Hint: <kbd>:set spellfile=(SPELLFILE)</kbd> to use the extra words in (SPELLFILE) when spell-checking.**
+**Tip: <kbd>:set spellfile=(SPELLFILE)</kbd> to use the extra words in (SPELLFILE) when spell-checking.**
 
-**Hint: <kbd>]s</kbd> and <kbd>[s</kbd> navigate to the next and previous misspelled word in the open file.**
+**Tip: <kbd>]s</kbd> and <kbd>[s</kbd> navigate to the next and previous misspelled word in the open file.**
 
-**Hint: <kbd>zg</kbd> saves the word under the cursor as "good" in (SPELLFILE). <kbd>zw</kbd> saves it as "wrong" in (SPELLFILE). <kbd>zuw</kbd> and <kbd>zug</kbd> are used to <kbd>u</kbd>ndo <kbd>zg</kbd> and <kbd>zw</kbd>.**
+**Tip: <kbd>zg</kbd> saves the word under the cursor as "good" in (SPELLFILE). <kbd>zw</kbd> saves it as "wrong" in (SPELLFILE). <kbd>zuw</kbd> and <kbd>zug</kbd> are used to <kbd>u</kbd>ndo <kbd>zg</kbd> and <kbd>zw</kbd>.**
 
-**Hint: <kbd>au BufRead (PATH)/&#42;.tex (COMMAND)</kbd> to run (COMMAND) whenever you open a .tex-file inside (PATH).**
+**Tip: <kbd>au BufRead (PATH)/&#42;.tex (COMMAND)</kbd> to run (COMMAND) whenever you open a .tex-file inside (PATH).**
 
-**Hint: Add <kbd>let g:tex&#95;comment&#95;nospell=1</kbd> in your vimrc to disable spell-checking inside LaTeX comments.**
+**Tip: Add <kbd>let g:tex&#95;comment&#95;nospell=1</kbd> in your vimrc to disable spell-checking inside LaTeX comments.**
 
 In my vimrc, I have the following lines to enable spell-checking for my thesis:
 
@@ -383,14 +383,175 @@ au BufRead /home/rav/work/thesis/*.tex
 ```
 
 
-TODO Lesson four: Creating and editing multiple files
------------------------------------------------------
+Lesson four: Creating and editing multiple files
+------------------------------------------------
 
-<https://TAAGEKAMMERET.dk/galleri/2018>
+If you go to <https://TAAGEKAMMERET.dk/galleri/2018>,
+you will see a list of albums for the year 2018/19,
+named "BEST", "KBEST-perioden", "FU", "GF", and so on.
+If you replace "2018" in the URL with a previous year, you'll get a list of that year's albums.
 
-Make links with CTRL-X
+For the next exercise we'll retrieve the list of album names for multiple years.
 
-Use gf to open link
+**Tip: If you tell Vim to open a webpage instead of a filename, Vim will download and display the HTML source code of that page.**
+
+Open the page's source code in Vim by typing <kbd>:e https://TAAGEKAMMERET.dk/galleri/2018</kbd>.
+
+It's a long page, full of hard-to-decipher HTML code.
+However, we can still use a couple of Vim tricks to boil it down to just the list of album names we're interested in.
+
+**Tip: Press <kbd>/(PATTERN)</kbd> to search in the open file. Press <kbd>n</kbd> and <kbd>N</kbd> to move to the next or previous search result.**
+
+Try searching the file for the string "KBEST-perioden" by typing <kbd>/KBEST-perioden</kbd>.
+You should end up at the following part of the file:
+
+```
+<div class="col-xs-6 col-sm-4 col-md-3">
+  <a class="thumbnail" href="/galleri/2018/kbest-perioden">
+    <div class="thumbcap">
+      
+	<img src="/media/__sized__/2018/kbest-perioden/img_6585-crop-c0-5__0-5-253x253-70.JPG" alt="KBEST-perioden">
+      
+      <div class="caption">
+	<h5>KBEST-perioden
+	  <small>53 billeder</small>
+	</h5>
+      </div>
+    </div>
+  </a>
+</div> <!-- col-xs-6 thumb -->
+```
+
+Notice that the album name is shown next to the code `<h5>`.
+Now we might guess that all the album names will be lines that contain `<h5>`.
+
+**Tip: Press <kbd>:v/(PATTERN)/d</kbd> to delete all lines that do not contain `(PATTERN)`.**
+
+Type <kbd>:v/&lt;h5&gt;/d</kbd> to keep only the lines containing `<h5>`.
+If you scroll through the resulting text, you should find that all the lines that remain
+correspond exactly to the album names!
+
+**Exercise:** Record a macro where you press <kbd>0</kbd> to move to the beginning of the line and <kbd>df&gt;</kbd> to delete everything until and including the `>` in `<h5>`. Replay the macro on all lines in the buffer.
+
+**Tip: Press <kbd>:sav (FILENAME)</kbd> to save the current file under a new name.**
+
+There is a subtle difference between using <kbd>:w (FILENAME)</kbd>
+and <kbd>:sav (FILENAME)</kbd> to save a file.
+If you're currently editing a saved file, say foo.txt,
+and you press <kbd>:w bar.txt</kbd>,
+then Vim will write the contents to bar.txt, but you will still be editing foo.txt.
+You need to press <kbd>:sav bar.txt</kbd>
+to write the contents to bar.txt *and* switch to bar.txt.
+
+Press <kbd>:sav 2018.tex</kbd> to save the contents to 2018.tex.
+It might not look like LaTeX code right now, but don't worry, we will fix that later.
+
+Next, switch to a new file names links.txt by pressing <kbd>:e links.txt</kbd>.
+Insert the URL from before in the new file: `https://TAAGEKAMMERET.dk/galleri/2018`
+
+**Tip: Press <kbd>CTRL-X</kbd> to decrease the number under the cursor by one.**
+If there is no number under the cursor, Vim will search to the right in the current line for the first number it can find.
+
+Press <kbd>0</kbd> to move to the beginning of the line and <kbd>CTRL-X</kbd> to decrease the year in the URL by one.
+
+Next, press <kbd>yyp</kbd> to make a copy of the line and press <kbd>CTRL-X</kbd> to decrease the year once more.
+
+Repeat the process until you have, let's say, 6 URLs. Your file should contain the contents:
+
+```
+https://TAAGEKAMMERET.dk/galleri/2017
+https://TAAGEKAMMERET.dk/galleri/2016
+https://TAAGEKAMMERET.dk/galleri/2015
+https://TAAGEKAMMERET.dk/galleri/2014
+https://TAAGEKAMMERET.dk/galleri/2013
+https://TAAGEKAMMERET.dk/galleri/2012
+```
+
+**Tip: Press <kbd>CTRL-W</kbd><kbd>s</kbd> to <kbd>s</kbd>plit the view of the current file into two.**
+
+**Tip: Press <kbd>CTRL-W</kbd><kbd>CTRL-W</kbd> to move the cursor to the next split.**
+
+**Tip: Press <kbd>CTRL-W</kbd><kbd>c</kbd> to <kbd>c</kbd>lose the split that the cursor is currently in.**
+
+**Tip: Press <kbd>CTRL-W</kbd><kbd>o</kbd> to make the split that the cursor is currently in the <kbd>o</kbd>nly split, that is, close all other splits.**
+
+**Exercise:** Try splitting the current file, moving between the splits, make some edits in one split and see them reflected in the other, undo your edits, and close the splits again.
+
+**Tip: Press <kbd>gf</kbd> to <kbd>g</kbd>o to the <kbd>f</kbd>ile under the cursor.**
+
+Split the current file with <kbd>CTRL-W</kbd><kbd>s</kbd>, move to the top line in the file with <kbd>gg</kbd> and press <kbd>gf</kbd> to open the URL under the cursor.
+
+Repeat the steps you took to create 2018.tex, but don't save the file as 2017.tex just yet.
+
+**Tip: Press <kbd>yiw</kbd> to <kbd>y</kbd>ank (i.e. copy) the <kbd>w</kbd>ord under the cursor.**
+
+Move the cursor to the split containing links.txt by pressing <kbd>CTRL-W CTRL-W</kbd>, and press <kbd>$</kbd><kbd>yiw</kbd> to move the cursor to the end of the line and yank `2017`.
+If you press <kbd>p</kbd> anywhere now, you can verify that `2017` has been copied successfully.
+
+Move back to the split containing the album names of 2017.
+
+**Tip: Press <kbd>CTRL-R</kbd><kbd>"</kbd> while editing the command-line at the bottom of the screen to put the text you last yanked or deleted.**
+This inserts the same text as would be inserted with <kbd>p</kbd> in Normal mode.
+
+Press <kbd>:sav (CTRL-R)".tex</kbd> to save the file as `2017.tex`. When you press <kbd>CTRL-R</kbd>, Vim should display a `"` character without moving the cursor to the right. Then when you press <kbd>"</kbd>, the copied text `2017` should appear.
+
+Close the split with <kbd>CTRL-W</kbd><kbd>c</kbd> and delete the 2017-link with <kbd>dd</kbd>.
+
+**Exercise (hard):** Repeat the above steps to create `2016.tex`, only this time recording the steps into a macro! Remember to use a different macro-letter for this macro than the macro you used to remove the `<h5>` in the above buffer. You won't be able to record a small macro while recording this larger macro.
+
+Hopefully, you should end up with files named 2018.tex, 2017.tex, 2016.tex, 2015.tex, 2014.tex, 2013.tex, and 2012.tex.
+
+But they don't contain proper LaTeX code -- let's do something about that!
+
+**Tip: Press <kbd>:n</kbd> and <kbd>:prev</kbd> to move to the next and previous file specified on the command line.**
+
+**Tip: Press <kbd>:args</kbd> to display the list of files specified on the command line.**
+
+**Tip: Press <kbd>:wn</kbd> to <kbd>w</kbd>rite the current file and go to the <kbd>n</kbd>ext file.** <kbd>:wn</kbd> is short for <kbd>:w</kbd> followed by <kbd>:n</kbd>.
+
+Close Vim and reopen it with the command-line `vim 20*.tex`. Vim should open and display 2012.tex, and if you press <kbd>:args</kbd>, Vim should respond with the list of 7 files we have created so far.
+
+**Tip: Press <kbd>CTRL-V</kbd> to enter Visual Block mode. After making a Visual Block selection, press <kbd>I</kbd>, type some text and press <kbd>(ESCAPE)</kbd> to insert text in front of each line in the selected block. Type <kbd>$A</kbd> to insert text in the end of each selected line.**
+
+**Exercise:** Use Visual Block mode to type `\item ` in front of each line in 2018.tex. Then type <kbd>:wn</kbd> to write and go to the next file.
+
+**Exercise:** Record a macro to insert `\item ` in front of each line, write the file and go to the next one. Replay the macro to process each of the opened files.
+
+Here's a LaTeX template for you. Copy it into a new file named `albums.tex`.
+
+```
+\documentclass{memoir}
+\usepackage[utf8]{inputenc}
+\begin{document}
+\chapter{TK albums}
+
+\end{document}
+```
+
+**Tip: Press <kbd>:r !ls (PATTERN)</kbd> to insert a list of filenames matching `(PATTERN)`.**
+
+Move the cursor to the blank line and press <kbd>:r !ls 20&#42;.tex</kbd>.
+This should insert a list of filenames, so your file should look like this:
+
+```
+\documentclass{memoir}
+\usepackage[utf8]{inputenc}
+\begin{document}
+\chapter{TK albums}
+
+2012.tex
+2013.tex
+2014.tex
+2015.tex
+2016.tex
+2017.tex
+2018.tex
+\end{document}
+```
+
+**Exercise:** Without typing `2012`, change the first line to `\section{2012}\begin{itemize}\input{2012.tex}\end{itemize}`. Hint: Use `yiw` to copy `2012` and `p` to put a copy of it.
+
+**Exercise:** Repeat the steps for `2013.tex`, this time recording a macro. Replay your
 
 Use CTRL-O to go back
 
