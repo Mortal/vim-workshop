@@ -240,6 +240,10 @@ to the preamble of the document,
 and use what you have learned so far to convert each row
 into an invocation of the `\FU` LaTeX command.
 
+**Tip: Press <kbd>I</kbd> to insert text at the beginning of the line.**
+
+**Tip: Press <kbd>C</kbd> to delete the rest of the line and enter Insert mode.**
+
 Lesson two: Parselmouth
 -----------------------
 
